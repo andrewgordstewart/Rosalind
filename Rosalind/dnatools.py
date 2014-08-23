@@ -30,7 +30,7 @@ def gc_content(dna_sequence):
         raise ValueError
 
     content = (dna_sequence.count('C') + dna_sequence.count('G'))
-    content = 100 * content / float(len(dna_sequence))
+    content = content / float(len(dna_sequence))
     return content
 
 def rna_to_dna(rna_sequence):
@@ -84,6 +84,6 @@ if __name__ == '__main__':
     # print dna_to_rna('GATGGAACTTGACTACGTAAATT')
     # print reverse_compliment('AAAACCCGGT')
 
-    error = gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
+    error = 100*gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
     in_threshold = (-0.001 < error < 0.001)
     print error, in_threshold
