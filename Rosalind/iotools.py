@@ -22,5 +22,5 @@ if __name__ == '__main__':
     with open('../data/test.fasta') as fp:
         for name, seq in read_fasta(fp):
             fasta.append((name, seq))
-    print fasta[0][0]
+    print fasta[0][1]
 

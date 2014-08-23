@@ -1,5 +1,5 @@
 from nose.tools import *
-import Rosalind
+import rosalind
 
 def setup():
 	print "SETUP!"
