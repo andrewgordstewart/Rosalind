@@ -21,3 +21,9 @@ def reverse_compliment_test():
     # assert_equals(rosalind.dnatools.reverse_compliment( )
     # assert_equals(rosalind.dnatools.reverse_compliment( )
     # assert_equals(rosalind.dnatools.reverse_compliment( )
+
+def gc_content_test():
+    error = rosalind.dnatools.gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
+    assert -.001 < error < .001
+
+
