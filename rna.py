@@ -1,4 +1,4 @@
-from rosalind.dnatools import dna_to_rna
+from rosalind.genetools import dna_to_rna
 
 # print dna_to_rna('GATGGAACTTGACTACGTAAATT')
 

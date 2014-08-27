@@ -77,12 +77,38 @@ def reverse_compliment(dna_sequence):
 
     return result
 
+def rna_to_protein(rna_sequence):
+    if not valid_sequence(rna_sequence, 'rna') or len(rna_sequence)%3 != 0:
+        raise ValueError
+
+    f = open('../data/rna_codon_table.txt', 'r')
+
+
+    table = []
+
+    line = 'a'
+
+    protein = ''
+
+    for i in range(len(rna_sequence)/3):
+        a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
+        for codon in table:
+            if a+b+c in table[codon]:
+                protein = protein + codon
+
+    return protein
+
+
+
+
+
 if __name__ == '__main__':
     # print dna_profile('CACGT')
     # print dna_profile('AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC')?
     # print dna_to_rna('GATGGAACTTGACTACGTAAATT')
     # print reverse_compliment('AAAACCCGGT')
 
-    error = 100*gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
-    in_threshold = (-0.001 < error < 0.001)
-    print error, in_threshold
+    # error = 100*gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
+    # in_threshold = (-0.001 < error < 0.001)
+    # print error, in_threshold
+    pass

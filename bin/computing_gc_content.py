@@ -1,5 +1,5 @@
 from rosalind.iotools import read_fasta
-from rosalind.dnatools import gc_content
+from rosalind.genetools import gc_content
 
 fasta = {}
 with open('../data/rosalind_gc.txt') as fp:
