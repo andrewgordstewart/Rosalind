@@ -14,4 +14,8 @@ def mortal_fib(months, lifespan):
 
 
 if __name__ == '__main__':
-    print sum(i for i in mortal_fib(6, 3))
+    import os
+    n = sum(i for i in mortal_fib(80, 20))
+
+    cmd = 'echo %s | tr -d "\n" | pbcopy' % str(n)
+    os.system(cmd)

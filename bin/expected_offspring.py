@@ -12,4 +12,9 @@ def expected_dom_offspring(population):
 
 
 if __name__ == '__main__':
-    print expected_dom_offspring([1, 0, 0, 1, 0, 1])
+
+    # print expected_dom_offspring([1, 0, 0, 1, 0, 1])
+    print 'Please input the number of couples of each type.'
+    couple_profile = map(int, raw_input("> ").split(" "))
+
+    print expected_dom_offspring(couple_profile)

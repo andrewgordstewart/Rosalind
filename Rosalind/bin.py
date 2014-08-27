@@ -24,8 +24,8 @@ print is_dominant_prob(2, 2, 2)
 print is_dominant_prob(17, 20, 22)
 
 
-
-exit()
+cmd = 'echo %s | tr -d "\n" | pbcopy' % ''
+os.system(cmd)
 
 # homo_dom + homo_rec = [1,0]
 # homo_dom + homo_dom = [1, 1]
