@@ -1,4 +1,5 @@
 from codon_table import codon_table
+
 def valid_sequence(sequence, sequence_type):
     if not sequence_type in ['dna', 'rna']:
         return False
@@ -84,15 +85,6 @@ def rna_to_protein(rna_sequence):
 
     table = codon_table()
 
-    # f = open('../data/rna_codon_table.txt', 'r')
-
-    # table = {}
-    # for line in f:
-    #     temp = line.split(" ")
-    #     table[temp[0]] = temp[1].strip()
-
-    # print table
-
     protein = ''
     for i in range(len(rna_sequence))[::3]:
         a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
@@ -109,6 +101,9 @@ def rna_to_protein(rna_sequence):
     return protein
 
 
+def is_a_substring(s, t, k):
+
+    return None
 
 
 
@@ -121,4 +116,6 @@ if __name__ == '__main__':
     # error = 100*gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
     # in_threshold = (-0.001 < error < 0.001)
     # print error, in_threshold
-    print rna_to_protein('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA')
+    # print rna_to_protein('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA')
+
+    pass
