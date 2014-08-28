@@ -32,4 +32,7 @@ def rna_to_protein_test():
 
     assert_equals(rosalind.genetools.rna_to_protein(s1), s2)
 
-
+def sanity_test():
+    f = open('data/motif.txt', 'r')
+    bigstring = f.readline().strip()
+    assert_equals(bigstring, 'GATATATGCATATACTT')
