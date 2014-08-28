@@ -1,3 +1,4 @@
+from codon_table import codon_table
 def valid_sequence(sequence, sequence_type):
     if not sequence_type in ['dna', 'rna']:
         return False
@@ -81,20 +82,29 @@ def rna_to_protein(rna_sequence):
     if not valid_sequence(rna_sequence, 'rna') or len(rna_sequence)%3 != 0:
         raise ValueError
 
-    f = open('../data/rna_codon_table.txt', 'r')
+    table = codon_table()
 
+    # f = open('../data/rna_codon_table.txt', 'r')
 
-    table = []
+    # table = {}
+    # for line in f:
+    #     temp = line.split(" ")
+    #     table[temp[0]] = temp[1].strip()
 
-    line = 'a'
+    # print table
 
     protein = ''
-
-    for i in range(len(rna_sequence)/3):
+    for i in range(len(rna_sequence))[::3]:
         a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
-        for codon in table:
-            if a+b+c in table[codon]:
-                protein = protein + codon
+        codon = a+b+c
+        # print i, codon
+        if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
+            return protein
+        elif codon in table:
+            # print codon, table[codon]
+            protein = protein + table[codon]
+        else:
+            raise ValueError
 
     return protein
 
@@ -111,4 +121,4 @@ if __name__ == '__main__':
     # error = 100*gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
     # in_threshold = (-0.001 < error < 0.001)
     # print error, in_threshold
-    pass
+    print rna_to_protein('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA')

@@ -1,20 +1,8 @@
-f = open('../data/rna_to_codon_table.txt', 'r')
+from rosalind.genetools import rna_to_protein
+from rosalind.iotools import copy_to_clipboard
 
+print('Please input GNA strand')
+strand = raw_input("> ")
 
-
-strip = lambda s: s.strip()
-parse = lambda s: map(strip, s.split(", "))
-
-line = f.readline()
-table = []
-
-while line:
-    table.append(line)
-    line = f.readline()
-
-table = map(parse, table)
-
-
-for a in table:
-    a[0] = 'key: ' + a[0]
-    print a
+print(rna_to_protein(strand))
+copy_to_clipboard(rna_to_protein(strand))

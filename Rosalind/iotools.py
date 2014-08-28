@@ -15,6 +15,11 @@ def read_fasta(fp):
             seq.append(line)
     if name: yield (name, ''.join(seq))
 
+def copy_to_clipboard(s):
+    import os
+
+    cmd = 'echo %s | tr -d "\n" | pbcopy' % s
+    os.system(cmd)
 
 if __name__ == '__main__':
 
