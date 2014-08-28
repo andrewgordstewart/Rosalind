@@ -27,6 +27,22 @@ def dna_profile(dna_sequence):
 
     return [profile[i] for i in symbols]
 
+def profile_matrix(list_of_seq):
+    length = len(list_of_seq[0])
+    for seq in list_of_seq:
+        if not valid_sequence(seq, 'dna') or len(seq) != length:
+            raise ValueError
+
+    profile = [{'A':0, 'G':0, 'C':0, 'T':0} for i in range(length)]
+    for seq in list_of_seq:
+        for i in range(len(seq)):
+            profile[i][seq[i]] += 1
+
+    return profile
+
+
+
+
 def gc_content(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
         raise ValueError
@@ -102,8 +118,10 @@ def rna_to_protein(rna_sequence):
 
 
 def is_a_substring(s, t, k):
-
-    return None
+    # print k, t, s[k:k+len(t)]
+    if t == s[k:k+len(t)]:
+        return True
+    return False
 
 
 
@@ -118,4 +136,15 @@ if __name__ == '__main__':
     # print error, in_threshold
     # print rna_to_protein('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA')
 
-    pass
+    # print is_a_substring('abcabc', 'abc', 3)
+    # print is_a_substring('GATATATGCATATACTT', 'ATAT', 0)
+
+    from rosalind.iotools import read_fasta
+    fp = open('../data/sample.txt', 'r')
+    fasta = []
+    for name, seq in read_fasta(fp):
+        fasta.append(seq)
+
+    profile = profile_matrix(fasta)
+print profile
+
