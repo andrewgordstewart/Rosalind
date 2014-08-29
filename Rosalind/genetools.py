@@ -123,6 +123,10 @@ def is_a_substring(s, t, k):
         return True
     return False
 
+def does_overlap(s, t, k):
+
+    return s[-(k):] == t[:k] and s != t
+
 
 
 if __name__ == '__main__':
@@ -146,5 +150,5 @@ if __name__ == '__main__':
         fasta.append(seq)
 
     profile = profile_matrix(fasta)
-print profile
+    print profile
 

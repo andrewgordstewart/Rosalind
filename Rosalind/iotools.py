@@ -15,6 +15,13 @@ def read_fasta(fp):
             seq.append(line)
     if name: yield (name, ''.join(seq))
 
+def read_complete_fasta(fp):
+    fasta = []
+    for name, seq in read_fasta(fp):
+        fasta.append((name, seq))
+
+    return fasta
+
 def copy_to_clipboard(s):
     import os
 
