@@ -1,13 +1,20 @@
 from codon_table import codon_table
 
 def valid_sequence(sequence, sequence_type):
-    if not sequence_type in ['dna', 'rna']:
+    if not sequence_type in ['dna', 'rna', 'protein']:
         return False
 
     if sequence_type == 'dna':
         symbols = ['A', 'C', 'G', 'T']
     elif sequence_type == 'rna':
         symbols = ['A', 'C', 'G', 'U']
+    elif sequence_type == 'protein':
+        import string
+        alphabet = string.ascii_uppercase
+        symbols = [letter for letter in alphabet]
+        not_symbols = 'BJOUXZ'
+        for letter in not_symbols:
+            symbols.remove(letter)
 
     for s in sequence:
         if not s in symbols:
