@@ -61,3 +61,18 @@ def codon_table():
             'CGC': 'R',
             'UUC': 'F'
            }
+
+def reverse_codon_table():
+      table = codon_table()
+      reverse_table = {}
+      for codon in table:
+            reverse_table[table[codon]] = []
+
+      for codon in table:
+            reverse_table[table[codon]].append(codon)
+      return reverse_table
+
+if __name__ == '__main__':
+      print codon_table()
+      print '-'*79
+      print reverse_codon_table()
