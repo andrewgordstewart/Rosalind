@@ -47,9 +47,7 @@ def look_for_motif(sequence, motif):
     result = []
 
     for i in xrange(a-b):
-        # print 'checking: ', i, sequence[i:i+b]
         if check_motif(sequence[i:i+b]):
-            # print '*'*50
             result.append(i+1)
 
     return result
