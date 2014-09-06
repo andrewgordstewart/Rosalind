@@ -32,4 +32,4 @@ def copy_to_clipboard(s):
 
 if __name__ == '__main__':
 
-    pass
+    copy_to_clipboard('abc')

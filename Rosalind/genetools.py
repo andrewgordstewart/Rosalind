@@ -59,7 +59,7 @@ def gc_content(dna_sequence):
     return content
 
 def rna_to_dna(rna_sequence):
-    if not valid_sequence(rna_sequence, 'dna'):
+    if not valid_sequence(rna_sequence, 'rna'):
             raise ValueError
 
     dna_sequence = ''
@@ -86,7 +86,7 @@ def dna_to_rna(dna_sequence):
 
 def reverse_compliment(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
-        raise ValueError
+        raise ValueError('Invalid sequence type')
 
     s = dna_sequence[::-1]
     result = ''
@@ -144,6 +144,31 @@ def dna_to_protein(dna_sequence):
 def does_overlap(s, t, k):
 
     return s[-(k):] == t[:k] and s != t
+
+def candidate_proteins(sequence, sequence_type):
+    if sequence_type == 'dna':
+        pass
+    elif sequence_type == 'rna':
+        sequence = rna_to_dna(sequence)
+    else:
+        raise ValueError('Invalid sequence type')
+
+    rev_comp = reverse_compliment(sequence)
+
+    proteins = [dna_to_protein(sequence[i:]) for i in range(3)]
+    proteins.extend([dna_to_protein(rev_comp[i:]) for i in range(3)])
+
+    matches = set()
+    for p in proteins:
+        for i, c in enumerate(p):
+            if c == 'M':
+                for j, d in enumerate(p[i:]):
+                    if d == '*':
+                        matches.add(p[i:i+j])
+                        break
+
+    return matches
+
 
 
 

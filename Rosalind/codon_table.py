@@ -1,5 +1,5 @@
-def codon_table():
-    return {'GUC': 'V',
+def codon_table(with_stops = False):
+    table = {'GUC': 'V',
             'ACC': 'T',
             'GUA': 'V',
             'GUG': 'V',
@@ -61,6 +61,10 @@ def codon_table():
             'CGC': 'R',
             'UUC': 'F'
            }
+
+    return table
+
+      # stops = {'UAA', ''}
 
 def reverse_codon_table():
       table = codon_table()
