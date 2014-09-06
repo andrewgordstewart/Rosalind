@@ -1,8 +1,8 @@
-import rosalind.codon_table
+import rosalind.tables
 import rosalind.genetools
 
 # the number of choices of codons for a given protein code
-table = rosalind.codon_table.reverse_codon_table()
+table = rosalind.tables.reverse_codon_table()
 choice_table = {}
 for c in table:
     choice_table[c] = len(table[c])

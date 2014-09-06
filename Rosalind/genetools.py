@@ -1,4 +1,4 @@
-from codon_table import codon_table
+from tables import codon_table
 
 def valid_sequence(sequence, sequence_type):
     if not sequence_type in ['dna', 'rna', 'protein']:
@@ -46,9 +46,6 @@ def profile_matrix(list_of_seq):
             profile[i][seq[i]] += 1
 
     return profile
-
-
-
 
 def gc_content(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
@@ -109,26 +106,19 @@ def rna_to_protein(rna_sequence):
     table = codon_table()
 
     protein = ''
-    for i in range(len(rna_sequence)-3)[::3]:
-        a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
-        codon = a+b+c
-        if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
-            protein = protein + '*'
-        elif codon in table:
-            protein = protein + table[codon]
-        else:
-            raise ValueError
-    try:
-        a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
-        codon = a+b+c
-        if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
-            protein = protein + '*'
-        elif codon in table:
-            protein = protein + table[codon]
-        else:
-            raise ValueError
-    except IndexError:
-        pass
+    for i in range(len(rna_sequence))[::3]:
+        try:
+            a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
+            codon = a+b+c
+            if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
+                protein = protein + '*'
+            elif codon in table:
+                protein = protein + table[codon]
+            else:
+                raise ValueError
+        except IndexError:
+            pass
+    print i, len(rna_sequence)
 
     return protein
 
@@ -139,13 +129,11 @@ def dna_to_protein(dna_sequence):
     rna = dna_to_rna(dna_sequence)
     return rna_to_protein(rna)
 
-
-
 def does_overlap(s, t, k):
 
     return s[-(k):] == t[:k] and s != t
 
-def candidate_proteins(sequence, sequence_type):
+def candidate_proteins(sequence, sequence_type='dna'):
     if sequence_type == 'dna':
         pass
     elif sequence_type == 'rna':
@@ -169,10 +157,38 @@ def candidate_proteins(sequence, sequence_type):
 
     return matches
 
+def monoisotopic_mass(sequence, sequence_type='dna'):
+    if sequence_type == 'dna':
+        protein = dna_to_protein(sequence)
+    elif sequence_type == 'rna':
+        protein = rna_to_protein(sequence)
+    elif sequence_type == 'protein':
+        protein = sequence
+    else:
+        raise ValueError('Invalid sequence type')
 
+    from tables import monoisotopic_mass_table
+    table = monoisotopic_mass_table()
 
+    mass = 0
+    for p in protein:
+        mass = mass + table[p]
+
+    return mass
+
+def reverse_palindrome(sequence, sequence_type='dna'):
+    if sequence_type == 'rna':
+        dna = rna_to_dna(sequence)
+    elif sequence_type == 'dna':
+        dna = sequence
+    else:
+        raise ValueError('Invalid sequence type')
+
+    rev_comp = reverse_compliment(dna)
+
+    return rev_comp == dna
 
 if __name__ == '__main__':
 
-    rna = 'ACGUAGUCUCAAAAACUAAUAAAUAAAUAAAUAAAUAAAUAA'
-    print rna_to_protein(rna)
+    print reverse_palindrome('ATGCAT')
+    print reverse_compliment('ATGCAT')

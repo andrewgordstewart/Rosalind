@@ -30,6 +30,16 @@ def gc_content_test():
 
 def rna_to_protein_test():
     s1 = 'AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA'
-    s2 = 'MAMAPRTEINSTRING'
+    s2 = 'MAMAPRTEINSTRING*'
 
     assert_equals(rosalind.genetools.rna_to_protein(s1), s2)
+
+def monoisotopic_mass_test():
+    protein = 'SKADYEK'
+    mass = 821.392
+    assert_almost_equal(rosalind.genetools.monoisotopic_mass(protein, 'protein'), mass, places = 3)
+
+def reverse_palindrome_test():
+    dna = 'ATGCAT'
+    assert rosalind.genetools.reverse_palindrome(dna)
+
