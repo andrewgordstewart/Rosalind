@@ -1,16 +1,29 @@
-# from __future__ import print_function
-from rosalind.genetools import is_a_substring as _is_a_substring
+'''
+Finds the locations of 'substring' in 'bigstring'.
+'''
 
-f = open('../data/rosalind_subs.txt', 'r')
 
-bigstring = f.readline().strip()
-substring = f.readline().strip()
+def find_substring_locations(bigstring, substring):
 
-locations = []
-for i in range(len(bigstring) - len(substring)):
-    # print i, _is_a_substring(bigstring, substring, i)
-    if _is_a_substring(bigstring, substring, i):
-        locations.append(i+1)       # account for different start index
+    locations = []
+    i = bigstring.find(substring)
+    marker = 0
 
-for i in locations:
-    print i,
+    while i != -1:
+        locations.append(marker + i + 1)
+        bigstring = bigstring[i+1:]         # cut off string up to latest occurance
+        marker = marker + i + 1             # position in original string
+        i = bigstring.find(substring)
+
+    return locations
+
+if __name__ == '__main__':
+
+    with open('../data/rosalind_subs.txt', 'r') as f:
+        bigstring = f.readline().strip()
+        substring = f.readline().strip()
+
+    locations = find_substring_locations(bigstring, substring)
+
+    for i in locations:
+        print i,
