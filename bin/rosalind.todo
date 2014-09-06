@@ -1,2 +1,6 @@
+Soon
+ ☐ Optimize ocating_restriction_sites.py (it currently takes 1 minute to run!)
+
+
 Eventual:
  ☐ Refractor read_fasta to pass a check_function
