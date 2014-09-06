@@ -118,7 +118,6 @@ def rna_to_protein(rna_sequence):
                 raise ValueError
         except IndexError:
             pass
-    print i, len(rna_sequence)
 
     return protein
 
@@ -187,6 +186,29 @@ def reverse_palindrome(sequence, sequence_type='dna'):
     rev_comp = reverse_compliment(dna)
 
     return rev_comp == dna
+
+'''
+Splices _sequence_, given a list _introns_ of introns.
+Each intron in _introns_ is removed from _sequence_, and
+the result is returned.
+'''
+def splice(sequence, introns, sequence_type='dna'):
+    if sequence_type == 'rna':
+        dna = rna_to_dna(sequence)
+    elif sequence_type == 'dna':
+        dna = sequence
+    else:
+        raise ValueError('Invalide sequence type')
+
+    for intron in introns:
+        marker = 0
+        while marker != -1:
+            marker = dna.find(intron)
+            dna = dna.replace(intron, '')
+
+    protein = dna_to_protein(dna).replace('*', '')
+    return protein
+
 
 if __name__ == '__main__':
 
