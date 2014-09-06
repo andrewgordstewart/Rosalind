@@ -1,3 +1,7 @@
+'''
+A dictionary containing each codon, along with the corresponding amino
+acid code.
+'''
 def codon_table(with_stops = False):
     table = {'GUC': 'V',
             'ACC': 'T',
@@ -64,8 +68,10 @@ def codon_table(with_stops = False):
 
     return table
 
-      # stops = {'UAA', ''}
-
+'''
+The reverse of the codon table. Since the codon table is not bijective,
+each amino acid corresponds to a list of precursor codons.
+'''
 def reverse_codon_table():
       table = codon_table()
       reverse_table = {}
@@ -75,6 +81,39 @@ def reverse_codon_table():
       for codon in table:
             reverse_table[table[codon]].append(codon)
       return reverse_table
+
+'''
+Masses of the monoisotopic versions of amino acids. Monoisotopic amino
+acids are assumed to consist of the most common isotope of each atom,
+which is typically the lightest isotope.
+
+http://en.wikipedia.org/wiki/Monoisotopic_mass
+'''
+def monoisotopic_mass_table():
+      table = {
+               'A': 71.03711,
+               'C': 103.00919,
+               'D': 115.02694,
+               'E': 129.04259,
+               'F': 147.06841,
+               'G': 57.02146,
+               'H': 137.05891,
+               'I': 113.08406,
+               'K': 128.09496,
+               'L': 113.08406,
+               'M': 131.04049,
+               'N': 114.04293,
+               'P': 97.05276,
+               'Q': 128.05858,
+               'R': 156.10111,
+               'S': 87.03203,
+               'T': 101.04768,
+               'V': 99.06841,
+               'W': 186.07931,
+               'Y': 163.06333
+      }
+
+      return table
 
 if __name__ == '__main__':
       print codon_table()

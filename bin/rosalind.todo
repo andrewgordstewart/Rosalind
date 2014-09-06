@@ -1,0 +1,2 @@
+Eventual:
+ ☐ Refractor read_fasta to pass a check_function
