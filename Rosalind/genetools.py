@@ -59,7 +59,7 @@ def gc_content(dna_sequence):
     return content
 
 def rna_to_dna(rna_sequence):
-    if not valid_sequence(dna_sequence, 'dna'):
+    if not valid_sequence(rna_sequence, 'dna'):
             raise ValueError
 
     dna_sequence = ''
@@ -103,32 +103,43 @@ def reverse_compliment(dna_sequence):
     return result
 
 def rna_to_protein(rna_sequence):
-    if not valid_sequence(rna_sequence, 'rna') or len(rna_sequence)%3 != 0:
-        raise ValueError
+    if not valid_sequence(rna_sequence, 'rna'):
+        raise ValueError('Not a valid rna sequence')
 
     table = codon_table()
 
     protein = ''
-    for i in range(len(rna_sequence))[::3]:
+    for i in range(len(rna_sequence)-3)[::3]:
         a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
         codon = a+b+c
-        # print i, codon
         if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
-            return protein
+            protein = protein + '*'
         elif codon in table:
-            # print codon, table[codon]
             protein = protein + table[codon]
         else:
             raise ValueError
+    try:
+        a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
+        codon = a+b+c
+        if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
+            protein = protein + '*'
+        elif codon in table:
+            protein = protein + table[codon]
+        else:
+            raise ValueError
+    except IndexError:
+        pass
 
     return protein
 
+def dna_to_protein(dna_sequence):
+    if not valid_sequence(dna_sequence, 'dna'):
+        raise ValueError
 
-def is_a_substring(s, t, k):
-    # print k, t, s[k:k+len(t)]
-    if t == s[k:k+len(t)]:
-        return True
-    return False
+    rna = dna_to_rna(dna_sequence)
+    return rna_to_protein(rna)
+
+
 
 def does_overlap(s, t, k):
 
@@ -137,25 +148,6 @@ def does_overlap(s, t, k):
 
 
 if __name__ == '__main__':
-    # print dna_profile('CACGT')
-    # print dna_profile('AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC')?
-    # print dna_to_rna('GATGGAACTTGACTACGTAAATT')
-    # print reverse_compliment('AAAACCCGGT')
 
-    # error = 100*gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') - 60.919540
-    # in_threshold = (-0.001 < error < 0.001)
-    # print error, in_threshold
-    # print rna_to_protein('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA')
-
-    # print is_a_substring('abcabc', 'abc', 3)
-    # print is_a_substring('GATATATGCATATACTT', 'ATAT', 0)
-
-    from rosalind.iotools import read_fasta
-    fp = open('../data/sample.txt', 'r')
-    fasta = []
-    for name, seq in read_fasta(fp):
-        fasta.append(seq)
-
-    profile = profile_matrix(fasta)
-    print profile
-
+    rna = 'ACGUAGUCUCAAAAACUAAUAAAUAAAUAAAUAAAUAAAUAA'
+    print rna_to_protein(rna)

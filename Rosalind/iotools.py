@@ -16,6 +16,7 @@ def read_fasta(fp):
             seq.append(line)
     if name: yield (name, ''.join(seq))
 
+
 def read_complete_fasta(fp):
     fasta = []
     for name, seq in read_fasta(fp):
@@ -31,14 +32,4 @@ def copy_to_clipboard(s):
 
 if __name__ == '__main__':
 
-    # fasta = []
-    # with open('../data/test.fasta') as fp:
-    #     for name, seq in read_fasta(fp):
-    #         fasta.append((name, seq))
-    # print fasta[0][1]
-
-    import urllib
-
-    protein = urllib.urlopen('http://www.uniprot.org/uniprot/B5ZC00.fasta').read()
-    print parse_fasta(protein)[1]
-
+    pass
