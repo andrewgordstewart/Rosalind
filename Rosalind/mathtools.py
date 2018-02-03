@@ -8,9 +8,9 @@ def generalized_fib(n, k):
 
     return b
 
+
 def hamming_distance(seq1, seq2):
     assert len(seq1) == len(seq2)
-
 
     max_length = max(len(seq1), len(seq2))
     dist = 0
@@ -21,6 +21,7 @@ def hamming_distance(seq1, seq2):
 
     return max_length - dist
 
+
 if __name__ == '__main__':
-    print hamming_distance('abcd', 'abdc')
-    print hamming_distance('GAGCCTACTAACGGGAT', 'CATCGTAATGACGGCCT')
+    print(hamming_distance('abcd', 'abdc'))
+    print(hamming_distance('GAGCCTACTAACGGGAT', 'CATCGTAATGACGGCCT'))
