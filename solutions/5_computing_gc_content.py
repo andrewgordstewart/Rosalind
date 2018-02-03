@@ -8,13 +8,9 @@ with open('../data/rosalind_gc.txt') as fp:
         # fasta.append((name, seq))
     fp.close
 
-# print fasta
-# key = raw_input("input key: ")
-# key = '>Rosalind_0808'
-
 max_gc = 0
 for key in fasta:
     if gc_content(fasta[key]) > max_gc:
         max_gc, max_key = gc_content(fasta[key]), key
 
-print max_key,  max_gc
+print max_key, max_gc
