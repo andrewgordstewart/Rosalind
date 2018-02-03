@@ -1,7 +1,8 @@
 from tables import codon_table
 
+
 def valid_sequence(sequence, sequence_type):
-    if not sequence_type in ['dna', 'rna', 'protein']:
+    if sequence_type not in ['dna', 'rna', 'protein']:
         return False
 
     if sequence_type == 'dna':
@@ -17,10 +18,11 @@ def valid_sequence(sequence, sequence_type):
             symbols.remove(letter)
 
     for s in sequence:
-        if not s in symbols:
+        if s not in symbols:
             return False
 
     return True
+
 
 def dna_profile(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
@@ -34,18 +36,20 @@ def dna_profile(dna_sequence):
 
     return [profile[i] for i in symbols]
 
+
 def profile_matrix(list_of_seq):
     length = len(list_of_seq[0])
     for seq in list_of_seq:
         if not valid_sequence(seq, 'dna') or len(seq) != length:
             raise ValueError
 
-    profile = [{'A':0, 'G':0, 'C':0, 'T':0} for i in range(length)]
+    profile = [{'A': 0, 'G': 0, 'C': 0, 'T': 0} for i in range(length)]
     for seq in list_of_seq:
         for i in range(len(seq)):
             profile[i][seq[i]] += 1
 
     return profile
+
 
 def gc_content(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
@@ -54,6 +58,7 @@ def gc_content(dna_sequence):
     content = (dna_sequence.count('C') + dna_sequence.count('G'))
     content = content / float(len(dna_sequence))
     return content
+
 
 def rna_to_dna(rna_sequence):
     if not valid_sequence(rna_sequence, 'rna'):
@@ -66,6 +71,7 @@ def rna_to_dna(rna_sequence):
         else:
             dna_sequence = dna_sequence + s
     return dna_sequence
+
 
 def dna_to_rna(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
@@ -80,6 +86,7 @@ def dna_to_rna(dna_sequence):
         else:
             rna_sequence = rna_sequence + s
     return rna_sequence
+
 
 def reverse_compliment(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
@@ -99,6 +106,7 @@ def reverse_compliment(dna_sequence):
 
     return result
 
+
 def rna_to_protein(rna_sequence):
     if not valid_sequence(rna_sequence, 'rna'):
         raise ValueError('Not a valid rna sequence')
@@ -110,7 +118,7 @@ def rna_to_protein(rna_sequence):
         try:
             a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
             codon = a+b+c
-            if codon in ['UAA', 'UAG', 'UGA']: #codons for end of rna code
+            if codon in ['UAA', 'UAG', 'UGA']:  # codons for end of rna code
                 protein = protein + '*'
             elif codon in table:
                 protein = protein + table[codon]
@@ -121,6 +129,7 @@ def rna_to_protein(rna_sequence):
 
     return protein
 
+
 def dna_to_protein(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
         raise ValueError
@@ -128,9 +137,11 @@ def dna_to_protein(dna_sequence):
     rna = dna_to_rna(dna_sequence)
     return rna_to_protein(rna)
 
+
 def does_overlap(s, t, k):
 
     return s[-(k):] == t[:k] and s != t
+
 
 def candidate_proteins(sequence, sequence_type='dna'):
     if sequence_type == 'dna':
@@ -156,6 +167,7 @@ def candidate_proteins(sequence, sequence_type='dna'):
 
     return matches
 
+
 def monoisotopic_mass(sequence, sequence_type='dna'):
     if sequence_type == 'dna':
         protein = dna_to_protein(sequence)
@@ -175,6 +187,7 @@ def monoisotopic_mass(sequence, sequence_type='dna'):
 
     return mass
 
+
 def reverse_palindrome(sequence, sequence_type='dna'):
     if sequence_type == 'rna':
         dna = rna_to_dna(sequence)
@@ -187,12 +200,13 @@ def reverse_palindrome(sequence, sequence_type='dna'):
 
     return rev_comp == dna
 
-'''
-Splices _sequence_, given a list _introns_ of introns.
-Each intron in _introns_ is removed from _sequence_, and
-the result is returned.
-'''
+
 def splice(sequence, introns, sequence_type='dna'):
+    '''
+    Splices _sequence_, given a list _introns_ of introns.
+    Each intron in _introns_ is removed from _sequence_, and
+    the result is returned.
+    '''
     if sequence_type == 'rna':
         dna = rna_to_dna(sequence)
     elif sequence_type == 'dna':
@@ -212,5 +226,5 @@ def splice(sequence, introns, sequence_type='dna'):
 
 if __name__ == '__main__':
 
-    print reverse_palindrome('ATGCAT')
-    print reverse_compliment('ATGCAT')
+    print(reverse_palindrome('ATGCAT'))
+    print(reverse_compliment('ATGCAT'))
