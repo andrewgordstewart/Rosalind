@@ -21,3 +21,4 @@ var/
 # Rosalind specific
 webpage/
 tmp/
+data/
