@@ -1,3 +1,5 @@
+import sys
+from importlib import import_module
 from time import time
 
 
@@ -31,3 +33,11 @@ class Solution():
 
             secs = t2 - t1
             print(f"Solved in {secs} seconds")
+
+
+if __name__ == "__main__":
+    solution_module_name = sys.argv[1]
+    solution_module = import_module(f'solutions.{solution_module_name}')
+    PROBLEM_PREFIX = solution_module_name[0:2]
+
+    Solution(solution_module.solve, PROBLEM_PREFIX).solve(test="test" in sys.argv)
