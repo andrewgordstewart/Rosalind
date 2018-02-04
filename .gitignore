@@ -22,3 +22,6 @@ var/
 webpage/
 tmp/
 data/
+
+# Pytest
+.pytest_cache/
