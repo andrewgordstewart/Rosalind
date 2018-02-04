@@ -1,8 +1,14 @@
+import sys
+
 from rosalind.genetools import dna_to_rna
+from rosalind.solution import Solution
 
-# print dna_to_rna('GATGGAACTTGACTACGTAAATT')
+PROBLEM_PREFIX = "02"
 
-f = open('data/rosalind_rna.txt', 'r')
-s = f.read().rstrip()
 
-print dna_to_rna(s)
+def solve(dna_string):
+    return dna_to_rna(dna_string.rstrip())
+
+
+if __name__ == "__main__":
+    Solution(solve, PROBLEM_PREFIX).solve(test="test" in sys.argv)
