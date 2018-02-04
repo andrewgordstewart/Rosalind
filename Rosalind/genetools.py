@@ -27,7 +27,7 @@ def valid_sequence(sequence, sequence_type):
 
 def dna_profile(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
-        raise ValueError
+        raise ValueError(f"Invalid dna sequence: {dna_sequence}")
 
     profile = dict(A=0, C=0, G=0, T=0)
     symbols = ['A', 'C', 'G', 'T']
@@ -76,7 +76,7 @@ def rna_to_dna(rna_sequence):
 
 def dna_to_rna(dna_sequence):
     if not valid_sequence(dna_sequence, 'dna'):
-            raise ValueError
+            raise ValueError(f"Invalid dna sequence {dna_sequence}")
 
     rna_sequence = ''
     for s in dna_sequence:
