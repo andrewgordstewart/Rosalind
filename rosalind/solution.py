@@ -11,8 +11,13 @@ class Solution():
             sample_in = input("Please enter sample input\n")
             sample_out = input("Please enter sample output\n")
 
-            assert sample_out == self._solve(sample_in)
-            print("Success")
+            solution = self._solve(sample_in)
+            try:
+                assert sample_out == solution
+            except AssertionError:
+                print("Failure: ", sample_out, solution)
+            else:
+                print("Success")
         else:
             with open(f"./data/input/{self.problem_prefix}.txt") as f_in:
                 dataset_in = f_in.read()
