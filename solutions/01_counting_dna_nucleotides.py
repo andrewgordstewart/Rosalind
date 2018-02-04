@@ -1,8 +1,20 @@
 import sys
+import timeit
 
 import rosalind.genetools
 
-if len(sys.argv) > 1 and sys.argv[1] == "test":
+
+def solve():
+    with open('./data/input/01.txt', 'r') as f_in:
+        dna_string = f_in.read().strip()
+
+        with open('./data/output/01.txt', 'w+') as f_out:
+            for codon in rosalind.genetools.dna_profile(dna_string):
+                f_out.write(str(codon))
+                f_out.write(' ')
+
+
+if "test" in sys.argv:
     sample_in = input("Please enter the sample input:\n")
     sample_out = input("Please enter the sample output:\n")
 
@@ -11,14 +23,9 @@ if len(sys.argv) > 1 and sys.argv[1] == "test":
     try:
         assert sample_out == ' '.join(str(num) for num in answer)
     except AssertionError:
-        print(sample_out, rosalind.genetools.dna_profile(sample_in))
+        print(sample_out, answer)
     else:
         print("Success")
 else:
-    with open('../input/01.txt', 'r') as f_in:
-        dna_string = f_in.read()
-
-        with open('../output/01.txt', 'w+') as f_out:
-            for codon in rosalind.genetools.dna_profile(dna_string):
-                f_out.write(str(codon))
-                f_out.write(' ')
+    secs = timeit.timeit("solve()",  setup="from __main__ import solve", number=1)
+    print(f"Solved in {secs} seconds")
