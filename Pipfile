@@ -9,6 +9,7 @@ name = "pypi"
 
 ipython = "*"
 "bs4" = "*"
+pytest = "*"
 
 
 [dev-packages]
