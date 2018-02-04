@@ -1,9 +1,9 @@
 import string
 
-from .tables import codon_table, monoisotopic_mass_table
+from .tables import CODON_TABLE, monoisotopic_mass_table
 
 
-def valid_sequence(sequence, sequence_type):
+def validate_sequence(sequence, sequence_type):
     if sequence_type not in ['dna', 'rna', 'protein']:
         return False
 
@@ -20,14 +20,13 @@ def valid_sequence(sequence, sequence_type):
 
     for s in sequence:
         if s not in symbols:
-            return False
+            raise ValueError(f"Invalid {sequence_type} sequence: {sequence}")
 
     return True
 
 
 def dna_profile(dna_sequence):
-    if not valid_sequence(dna_sequence, 'dna'):
-        raise ValueError(f"Invalid dna sequence: {dna_sequence}")
+    validate_sequence(dna_sequence, 'dna')
 
     profile = dict(A=0, C=0, G=0, T=0)
     symbols = ['A', 'C', 'G', 'T']
@@ -41,8 +40,7 @@ def dna_profile(dna_sequence):
 def profile_matrix(list_of_seq):
     length = len(list_of_seq[0])
     for seq in list_of_seq:
-        if not valid_sequence(seq, 'dna') or len(seq) != length:
-            raise ValueError
+        validate_sequence(seq, 'dna') or len(seq) != length
 
     profile = [{'A': 0, 'G': 0, 'C': 0, 'T': 0} for i in range(length)]
     for seq in list_of_seq:
@@ -53,8 +51,7 @@ def profile_matrix(list_of_seq):
 
 
 def gc_content(dna_sequence):
-    if not valid_sequence(dna_sequence, 'dna'):
-        raise ValueError
+    validate_sequence(dna_sequence, 'dna')
 
     content = (dna_sequence.count('C') + dna_sequence.count('G'))
     content = content / float(len(dna_sequence))
@@ -62,8 +59,7 @@ def gc_content(dna_sequence):
 
 
 def rna_to_dna(rna_sequence):
-    if not valid_sequence(rna_sequence, 'rna'):
-            raise ValueError
+    validate_sequence(rna_sequence, 'rna')
 
     dna_sequence = ''
     for s in rna_sequence:
@@ -75,8 +71,7 @@ def rna_to_dna(rna_sequence):
 
 
 def dna_to_rna(dna_sequence):
-    if not valid_sequence(dna_sequence, 'dna'):
-            raise ValueError(f"Invalid dna sequence {dna_sequence}")
+    validate_sequence(dna_sequence, 'dna')
 
     rna_sequence = ''
     for s in dna_sequence:
@@ -90,8 +85,7 @@ def dna_to_rna(dna_sequence):
 
 
 def reverse_compliment(dna_sequence):
-    if not valid_sequence(dna_sequence, 'dna'):
-        raise ValueError('Invalid sequence type')
+    validate_sequence(dna_sequence, 'dna')
 
     s = dna_sequence[::-1]
     result = ''
@@ -109,10 +103,9 @@ def reverse_compliment(dna_sequence):
 
 
 def rna_to_protein(rna_sequence):
-    if not valid_sequence(rna_sequence, 'rna'):
-        raise ValueError('Not a valid rna sequence')
+    validate_sequence(rna_sequence, 'rna')
 
-    table = codon_table()
+    table = CODON_TABLE
 
     protein = ''
     for i in range(len(rna_sequence))[::3]:
@@ -124,7 +117,7 @@ def rna_to_protein(rna_sequence):
             elif codon in table:
                 protein = protein + table[codon]
             else:
-                raise ValueError
+                raise ValueError(f"Invalid codon: {codon}")
         except IndexError:
             pass
 
@@ -132,8 +125,7 @@ def rna_to_protein(rna_sequence):
 
 
 def dna_to_protein(dna_sequence):
-    if not valid_sequence(dna_sequence, 'dna'):
-        raise ValueError
+    validate_sequence(dna_sequence, 'dna')
 
     rna = dna_to_rna(dna_sequence)
     return rna_to_protein(rna)

@@ -1,5 +1,5 @@
 from rosalind.iotools import parse_fasta
-from rosalind.genetools import valid_sequence
+from rosalind.genetools import validate_sequence
 import urllib
 
 # Get the names of the proteins
@@ -26,8 +26,7 @@ Look for a particular protein motif in a protein sequence.
      ('is not', [P])]
 """
 def look_for_motif(sequence, motif):
-    if not valid_sequence(sequence, 'protein'):
-        raise ValueError
+    validate_sequence(sequence, 'protein')
 
     # print 'checking %s for %s' % (sequence, motif)
 
