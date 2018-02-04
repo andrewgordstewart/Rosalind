@@ -1,4 +1,6 @@
-from tables import codon_table
+import string
+
+from .tables import codon_table, monoisotopic_mass_table
 
 
 def valid_sequence(sequence, sequence_type):
@@ -10,7 +12,6 @@ def valid_sequence(sequence, sequence_type):
     elif sequence_type == 'rna':
         symbols = ['A', 'C', 'G', 'U']
     elif sequence_type == 'protein':
-        import string
         alphabet = string.ascii_uppercase
         symbols = [letter for letter in alphabet]
         not_symbols = 'BJOUXZ'
@@ -178,7 +179,6 @@ def monoisotopic_mass(sequence, sequence_type='dna'):
     else:
         raise ValueError('Invalid sequence type')
 
-    from tables import monoisotopic_mass_table
     table = monoisotopic_mass_table()
 
     mass = 0
