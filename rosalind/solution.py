@@ -7,7 +7,7 @@ from rosalind.equality import equals
 
 class Solution():
     def __init__(self, solve, problem_prefix):
-        self._solve = solve
+        self._solve = lambda x: str(solve(x))
         self.problem_prefix = problem_prefix
 
     def solve(self, test=False):
