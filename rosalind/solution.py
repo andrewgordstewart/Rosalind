@@ -2,6 +2,8 @@ import sys
 from importlib import import_module
 from time import time
 
+from rosalind.equality import equals
+
 
 class Solution():
     def __init__(self, solve, problem_prefix):
@@ -10,14 +12,16 @@ class Solution():
 
     def solve(self, test=False):
         if test:
-            sample_in = input("Please enter sample input\n")
-            sample_out = input("Please enter sample output\n")
+            with open(f"./test_data/input/{self.problem_prefix}.txt") as f_in:
+                sample_in = f_in.read()
+            with open(f"./test_data/output/{self.problem_prefix}.txt") as f_out:
+                sample_out = f_out.read()
 
             solution = self._solve(sample_in)
             try:
-                assert sample_out == solution
+                assert equals(sample_out, solution)
             except AssertionError:
-                print("Failure: ", sample_out, solution)
+                print("Failure", sample_out, solution)
             else:
                 print("Success")
         else:
