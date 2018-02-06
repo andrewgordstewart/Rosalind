@@ -5,7 +5,10 @@ from .tables import CODON_TABLE, monoisotopic_mass_table
 
 def validate_sequence(sequence, sequence_type):
     if sequence_type not in ['dna', 'rna', 'protein']:
-        return False
+        raise ValueError(f"Invalid sequence type: {sequence_type}")
+
+    if not sequence:
+        raise ValueError(f"Empty sequence")
 
     if sequence_type == 'dna':
         symbols = ['A', 'C', 'G', 'T']
