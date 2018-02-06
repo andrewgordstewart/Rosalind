@@ -5,14 +5,14 @@ def parse_fasta(fasta_id):
     return (name, sequence)
 
 
-def read_fasta(fp):
+def read_fasta(fasta):
     name, seq = None, []
-    for line in fp:
+    for line in fasta.split('\n'):
         line = line.rstrip()
         if line.startswith(">"):
             if name:
                 yield (name, ''.join(seq))
-            name, seq = line, []
+            name, seq = line[1:], []
         else:
             seq.append(line)
     if name:
