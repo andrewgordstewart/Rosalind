@@ -1,8 +1,10 @@
 from rosalind.mathtools import hamming_distance
 
-f = open('../data/rosalind_hamm.txt', 'r')
 
-a = f.readline().rstrip()
-b = f.readline().rstrip()
+def solve(dataset):
+    lines = dataset.split('\n')
 
-print hamming_distance(a, b)
+    a = lines[0].rstrip()
+    b = lines[1].rstrip()
+
+    return str(hamming_distance(a, b))
