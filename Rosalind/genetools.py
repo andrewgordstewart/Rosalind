@@ -1,7 +1,12 @@
 import string
 
+import numpy as np
+
 from .tables import CODON_TABLE, monoisotopic_mass_table
 
+# TODO: Optimize using numpy arrays/matrices
+
+NUCLEOTIDES_IDX = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
 
 def validate_sequence(sequence, sequence_type):
     if sequence_type not in ['dna', 'rna', 'protein']:
@@ -40,15 +45,32 @@ def dna_profile(dna_sequence):
     return [profile[i] for i in symbols]
 
 
-def profile_matrix(list_of_seq):
-    length = len(list_of_seq[0])
-    for seq in list_of_seq:
-        validate_sequence(seq, 'dna') or len(seq) != length
+def dna_profile_matrix(dna_sequences):
+    """
+    Computes the frequencies of each nucleotide in a list of dna sequences.
+    :param dna_sequences: list(str)
+        List of dna sequences. Must all be valid dna sequences, of the same
+        length.
 
-    profile = [{'A': 0, 'G': 0, 'C': 0, 'T': 0} for i in range(length)]
-    for seq in list_of_seq:
-        for i in range(len(seq)):
-            profile[i][seq[i]] += 1
+    :return: matrix counts of nucleotide i in position j
+             nucleotides are index, in order, by 'ACGT'.
+             IE, 'C' is nucleotide 1.
+    :rtype: np.matrix
+    """
+    length = len(dna_sequences[0])
+
+    for seq in dna_sequences:
+        validate_sequence(seq, 'dna')
+        if len(seq) != length:
+            raise ValueError("All sequences must be the same length")
+
+    profile = np.full((4, length), 0)
+
+    # TODO: Optimize this horrible mess with numpy!
+    for seq in dna_sequences:
+        for i in range(length):
+            idx = NUCLEOTIDES_IDX[seq[i]]
+            profile[idx][i] += 1
 
     return profile
 
@@ -116,7 +138,7 @@ def rna_to_protein(rna_sequence):
             a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
             codon = a+b+c
             if codon in ['UAA', 'UAG', 'UGA']:  # codons for end of rna code
-                protein = protein + '*'
+                return protein
             elif codon in table:
                 protein = protein + table[codon]
             else:
@@ -124,7 +146,7 @@ def rna_to_protein(rna_sequence):
         except IndexError:
             pass
 
-    return protein
+    raise ValueError(f"Invalid rna sequence {rna_sequence}")
 
 
 def dna_to_protein(dna_sequence):
