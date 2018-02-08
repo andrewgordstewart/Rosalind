@@ -113,6 +113,6 @@ def monoisotopic_mass_table():
 
 
 if __name__ == '__main__':
-    print(codon_table())
+    print(CODON_TABLE)
     print('-'*79)
     print(reverse_codon_table())
