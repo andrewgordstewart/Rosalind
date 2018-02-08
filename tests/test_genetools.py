@@ -1,6 +1,7 @@
 import pytest
 from rosalind import genetools
 
+
 @pytest.mark.parametrize("sequence,sequence_type,valid", [
     ('ACGTGC', 'dna', True),
     ('ACGUUGUC', 'rna', True),
@@ -8,6 +9,7 @@ from rosalind import genetools
 ])
 def test_validate_sequence_when_valid(sequence, sequence_type, valid):
     assert genetools.validate_sequence(sequence, sequence_type) == valid
+
 
 @pytest.mark.parametrize("sequence,sequence_type", [
     ('ABCD', 'dna'),
@@ -18,6 +20,7 @@ def test_validate_sequence_when_valid(sequence, sequence_type, valid):
 def test_validate_sequence_when_invalid(sequence, sequence_type):
     with pytest.raises(ValueError):
         genetools.validate_sequence(sequence, sequence_type)
+
 
 def test_dna_profile():
     assert genetools.dna_profile('AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC') == [20, 12, 17, 21]
@@ -36,14 +39,15 @@ def test_reverse_compliment(dna, rna):
 
 
 def test_gc_content():
-   assert 100*genetools.gc_content('CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT') == pytest.approx(60.919540, 0.001)
+    dna_sequence = 'CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT'
+    assert 100*genetools.gc_content(dna_sequence) == pytest.approx(60.919540, 0.001)
 
 
 def test_rna_to_protein():
-    s1 = 'AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA'
-    s2 = 'MAMAPRTEINSTRING*'
+    rna_sequence = 'AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA'
+    protein_sequence = 'MAMAPRTEINSTRING'
 
-    assert genetools.rna_to_protein(s1) == s2
+    assert genetools.rna_to_protein(rna_sequence) == protein_sequence
 
 
 def test_monoisotopic_mass():
