@@ -8,6 +8,7 @@ from .tables import CODON_TABLE, monoisotopic_mass_table
 
 NUCLEOTIDES_IDX = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
 
+
 def validate_sequence(sequence, sequence_type):
     if sequence_type not in ['dna', 'rna', 'protein']:
         raise ValueError(f"Invalid sequence type: {sequence_type}")
