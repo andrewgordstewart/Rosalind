@@ -1,35 +1,24 @@
-from rosalind.iotools import read_fasta as _read_fasta
-from rosalind.genetools import profile_matrix as _profile_matrix
-fasta = []
-with open('../data/rosalind_cons.txt', 'r') as fp:
-    for name, seq in _read_fasta(fp):
-        fasta.append(seq)
-
-# print fasta
-
-profile = _profile_matrix(fasta)
-
-# print profile[0]
-consensus = [0 for i in range(len(profile))]
-count = 0
-for d in profile:
-    max = 0
-    for key in d:
-        if d[key] > max:
-            max = d[key]
-            consensus[count] = key
-    count += 1
+from rosalind.iotools import read_fasta as read_fasta
+from rosalind.genetools import dna_profile_matrix
 
 
-def string_sum(li):
-    s = ''
-    for string in li:
-        s = s + string
-    return s
+NUCLEOTIDES_IDX = {0: 'A', 1: 'C', 2: 'G', 3: 'T'}
 
-print string_sum(consensus)
-for key in profile[0]:
-    print key + ': ',
-    for d in profile:
-        print d[key],
-    print ''
+
+def solve(dataset):
+    dna_strings = [seq for _, seq in read_fasta(dataset)]
+
+    profile = dna_profile_matrix(dna_strings)
+
+    consensus = ''.join(nucleotide(counts) for counts in profile.transpose())
+
+    result = consensus
+    for idx, counts in enumerate(profile):
+        counts = list(str(c) for c in counts)
+        result = result + f"\n{NUCLEOTIDES_IDX[idx]}: {' '.join(counts)}"
+
+    return result
+
+
+def nucleotide(counts):
+    return NUCLEOTIDES_IDX[counts.argmax()]
