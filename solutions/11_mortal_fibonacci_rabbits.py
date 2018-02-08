@@ -1,21 +1,36 @@
+from collections import defaultdict
+
+
+def solve(dataset):
+
+    months, lifespan = map(int, dataset.split())
+    print(months, lifespan)
+
+    return(str(mortal_fib(months, lifespan)))
+
+
 def mortal_fib(months, lifespan):
-    population = [0 for i in range(lifespan)]
-    population[0] = 1
+    ages = defaultdict(int)
+    ages[0] = 1
+
+    i = 1
+    while i < months:
+        i += 1
+        ages = make_babies_and_kill_rabbits(ages, lifespan)
+
+    return(sum(ages.values()))
 
 
-    for i in xrange(1, months):
-        # print i, population
-        temp = sum(population[j] for j in xrange(1, lifespan))
-        for j in range(1, lifespan)[::-1]:
-            population[j] = population[j-1]
-        population[0] = temp
+def make_babies_and_kill_rabbits(ages, lifespan):
 
-    return population
+    # Take count of number of mature pairs of rabbits
+    # of array, indicating a newborn pair of rabbits.
+    num_babies = sum(ages[i] for i in range(1, lifespan))
 
+    # Increment each age by 1
+    for i in range(lifespan-1, 0, -1):
+        ages[i] = ages[i-1]
 
-if __name__ == '__main__':
-    import os
-    n = sum(i for i in mortal_fib(80, 20))
+    ages[0] = num_babies
 
-    cmd = 'echo %s | tr -d "\n" | pbcopy' % str(n)
-    os.system(cmd)
+    return ages
