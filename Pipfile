@@ -10,6 +10,7 @@ name = "pypi"
 ipython = "*"
 "bs4" = "*"
 pytest = "*"
+numpy = "*"
 
 
 [dev-packages]
