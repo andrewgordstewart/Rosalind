@@ -1,5 +1,6 @@
-import sys
 from importlib import import_module
+import os
+import sys
 from time import time
 
 from rosalind.equality import equals
@@ -40,8 +41,11 @@ class Solution():
 
 
 if __name__ == "__main__":
-    solution_module_name = sys.argv[1]
-    solution_module = import_module(f'solutions.{solution_module_name}')
-    PROBLEM_PREFIX = solution_module_name[0:2]
+    solution_number = sys.argv[1]
+    solutions = os.listdir('solutions')
+    solution_filename = next(s for s in solutions if s.startswith(solution_number))
+    solution = solution_filename.replace(".py", "")
 
-    Solution(solution_module.solve, PROBLEM_PREFIX).solve(test="test" in sys.argv)
+    solution_module = import_module(f'solutions.{solution}')
+
+    Solution(solution_module.solve, solution_number).solve(test="test" in sys.argv)
