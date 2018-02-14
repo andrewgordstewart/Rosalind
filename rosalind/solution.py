@@ -3,7 +3,7 @@ import os
 import sys
 from time import time
 
-from rosalind.equality import equals
+from rosalind.equality import all_equals
 
 
 class Solution():
@@ -20,7 +20,7 @@ class Solution():
 
             solution = self._solve(sample_in)
             try:
-                assert equals(sample_out, solution)
+                assert all_equals(sample_out, solution)
             except AssertionError:
                 print("Failure", sample_out, solution)
             else:
