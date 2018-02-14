@@ -1,23 +1,26 @@
-# id lcsm
-
-from rosalind.iotools import read_complete_fasta as read_fasta
-fasta = read_fasta(open('../data/rosalind_lcsm.txt', 'r'))
-# print fasta[0][1]
-li = []
-for i in range(len(fasta)):
-    li.append(fasta[i][1])
-
-from suffix_tree import GeneralisedSuffixTree
+from rosalind.iotools import read_fasta
 
 
-stree = GeneralisedSuffixTree(li)
+def solve(dataset):
+    dna_sequences = [fasta[1] for fasta in read_fasta(dataset)]
 
-max_len = 0
-for shared in stree.sharedSubstrings():
-    for seq, start, stop in shared:
-        if max_len < stop - start:
-            max_len = stop - start
-            # max_substr = fasta[seq][1][start:stop]
-            max_substr = li[seq][start:stop]
+    s0 = dna_sequences[0]
+    s1 = dna_sequences[1]
 
-print max_substr
+    left0, left1 = 0, 0
+
+    common_substrings = set()
+    for left0 in range(len(s0)):
+        for left1 in range(len(s1)):
+            i = 0
+            while left0 + i < len(s0) and left1 + i < len(s1) and s0[left0 + i] == s1[left1 + i]:
+                i += 1
+            common_substrings.add(s0[left0:left0 + i])
+
+    common_substrings = list(common_substrings)
+    common_substrings.sort(key=lambda s: -len(s))
+
+    for cs in common_substrings:
+        for seq in dna_sequences:
+            if all(cs in seq for seq in dna_sequences):
+                return cs
