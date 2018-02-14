@@ -11,6 +11,7 @@ ipython = "*"
 "bs4" = "*"
 pytest = "*"
 numpy = "*"
+jupyter = "*"
 
 
 [dev-packages]
