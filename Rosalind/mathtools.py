@@ -25,11 +25,11 @@ def hamming_distance(seq1, seq2):
     return max_length - dist
 
 
-def weighted_binom(n, k):
+def weighted_binom(n, k, p=0.5):
     if not n > 0 or not k >= 0:
         raise ValueError
     binom = factorial(n) / (factorial(k) * factorial(n-k))
-    weight = (.25**k) * (.75**(n-k))
+    weight = (p**k) * ((1-p)**(n-k))
     return binom * weight
 
 
