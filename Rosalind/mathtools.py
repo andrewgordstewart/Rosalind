@@ -1,3 +1,6 @@
+from math import factorial
+
+
 def generalized_fib(n, k):
     a, b = 0, 1
     counter = 0
@@ -20,6 +23,14 @@ def hamming_distance(seq1, seq2):
             dist += 1
 
     return max_length - dist
+
+
+def weighted_binom(n, k):
+    if not n > 0 or not k >= 0:
+        raise ValueError
+    binom = factorial(n) / (factorial(k) * factorial(n-k))
+    weight = (.25**k) * (.75**(n-k))
+    return binom * weight
 
 
 if __name__ == '__main__':
