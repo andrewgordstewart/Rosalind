@@ -15,23 +15,23 @@ Since the two traits are independent, each organism at level k is of
 type {Aa, Bb} with probability 1/4. So all we really need to do is
 a simple combinatorial calculation...
 '''
-
-from math import factorial
-
-def weighted_binom(n, k):
-    if not n > 0 or not k >= 0:
-        print n, k
-        raise ValueError
-    binom = factorial(n) / (factorial(k) * factorial(n-k))
-    weight = (.25**k) * (.75**(n-k))
-    return binom * weight
-
-k = 2 # number of generations
-N = 1 # desired number of offspring of type {Aa, Bb}
-gen = (2**k)
+from rosalind.mathtools import weighted_binom
 
 
-normalizing_constant = sum(weighted_binom(gen, i) for i in xrange(gen+1))
-mass_above_N = sum(weighted_binom(gen, i) for i in xrange(N, gen+1))
+def solve(dataset):
+    # k: number of generations
+    # N: desired number of offspring of type {Aa, Bb}
+    k, N = [int(s) for s in dataset.split(' ')]
+    gen = (2**k)
 
-print mass_above_N*1.0/normalizing_constant
+    normalizing_constant = sum(
+        weighted_binom(gen, i, p=0.25)
+        for i in range(gen+1)
+    )
+
+    mass_above_N = sum(
+        weighted_binom(gen, i, p=0.25)
+        for i in range(N, gen+1)
+    )
+
+    return(str(mass_above_N*1.0/normalizing_constant))
