@@ -12,6 +12,7 @@ ipython = "*"
 pytest = "*"
 numpy = "*"
 jupyter = "*"
+requests = "*"
 
 
 [dev-packages]
