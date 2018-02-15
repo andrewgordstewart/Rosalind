@@ -1,68 +1,96 @@
-from rosalind.iotools import parse_fasta
+from rosalind.iotools import parse_fasta, get_uniprot
 from rosalind.genetools import validate_sequence
-import urllib
-
-# Get the names of the proteins
-name_list = open('../data/rosalind_mprt.txt', 'r').readlines()
-for name in name_list: name = name.rstrip()
-
-# Create a list of urls to the fasta sequences
-url_list = ['http://www.uniprot.org/uniprot/' + name.rstrip() + '.fasta' for name in name_list]
-
-# Grab the protein fastas and parse them
-protein_fasta_list = [urllib.urlopen(url).read() for url in url_list]
-pure_protein_list = [parse_fasta(protein)[1] for protein in protein_fasta_list]
 
 
-"""
-Look for a particular protein motif in a protein sequence.
-- A protein motif is represented by a shorthand as follows: [XY] means "either X or Y" and {X} means "any amino acid except X." For example, the N-glycosylation motif is written as N{P}[ST]{P}.
-- The motif parameter should be a list with elements of the form
-  (quality, acid)
-  e.g. the above motif N{P}[ST]{P} would be written as
-    [('is', ['N']),
-     ('is not', ['P']),
-     ('is', [S, T]),
-     ('is not', [P])]
-"""
-def look_for_motif(sequence, motif):
+def solve(dataset):
+    protein_ids = [s.strip() for s in dataset.split()]
+    protein_fastas = [get_uniprot(uniprot_id) for uniprot_id in protein_ids]
+    pure_proteins = [parse_fasta(protein)[1] for protein in protein_fastas]
+
+    motif = Motif([
+        MotifElement(matches=True,  acids={'N'}),
+        MotifElement(matches=False, acids={'P'}),
+        MotifElement(matches=True,  acids={'S', 'T'}),
+        MotifElement(matches=False, acids={'P'}),
+    ])
+
+    solutions = []
+    for i, protein in enumerate(pure_proteins):
+        indices = [idx for idx in motif_index(motif, protein)]
+        if indices:
+            # Note that Rosalind uses 1-indexed arrays
+            indices = " ".join(str(i+1) for i in indices)
+            solutions.append(
+                f"{protein_ids[i]}\n{indices}"
+            )
+
+    return '\n'.join(solutions)
+
+
+def motif_index(motif, sequence, start=0):
     validate_sequence(sequence, 'protein')
 
     # print 'checking %s for %s' % (sequence, motif)
 
-    def check_motif(string):
-        if len(string) != len(motif):
-            raise ValueError
-
-        for i, x in enumerate(motif):
-            if (x[0] == 'is' and string[i] not in x[1]
-                or
-                x[0] == 'is not' and string[i] in x[1]):
-                return False
-        return True
-
     a = len(sequence)
     b = len(motif)
-    result = []
 
-    for i in xrange(a-b):
-        if check_motif(sequence[i:i+b]):
-            result.append(i+1)
+    for i in range(start, a-b):
+        if motif.matches(sequence[i:]):
+            yield i
 
-    return result
 
-motif = [('is', ['N']),
-     ('is not', ['P']),
-     ('is', ['S', 'T']),
-     ('is not', ['P'])]
+class Motif():
+    """
+    Look for a particular protein motif in a protein sequence.
+    - A protein motif is represented by a regular expression as follows:
+        [XY] means "either X or Y" and {X} means "any amino acid except X."
+        For example, the N-glycosylation motif is written as N{P}[ST]{P}.
+    """
+    def __init__(self, motif_elements):
+        self.motif_elements = motif_elements
 
-for i, protein in enumerate(pure_protein_list):
-    x = look_for_motif(protein, motif)
-    if x:
-        print name_list[i],
-        for i in x: print i,
-        print ''
-        # print x
+    def matches(self, seq):
+        return all(
+            m.matches(seq[i]) for i, m in enumerate(self.motif_elements)
+        )
 
-if __name__ == '__main__':
-    pass
+    def __len__(self):
+        return len(self.motif_elements)
+
+
+class MotifElement():
+    """
+    :param matches: whether the acid in question should match the
+        MotifElement's acids set.
+        ie. if the motif element is [SP], then matches should be True
+    :param acids: set of amino acid characters indicating which acids to test
+    """
+    def __init__(self, matches, acids):
+        self._matches = matches
+        self.acids = acids
+
+    def matches(self, acid):
+        """
+        :param acid: single character string
+
+        :returns:
+            - when _matches is True, whether acid is one of the element's acids
+            - when _matches is False, whether acid is not one of the element's
+              acids
+        """
+        if type(acid) != str or len(acid) > 1:
+            raise ValueError
+
+        return (
+            (self._matches and acid in self.acids) or
+            ((not self._matches) and acid not in self.acids)
+        )
+
+    def __repr__(self):
+        if self._matches and len(self.acids) == 1:
+            return f"{list(self.acids)[0]}"
+        elif self._matches:
+            return f"[{''.join(list(self.acids))}]"
+        else:
+            return f"{{{''.join(list(self.acids))}}}"
