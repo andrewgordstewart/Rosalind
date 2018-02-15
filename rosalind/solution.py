@@ -22,7 +22,9 @@ class Solution():
             try:
                 assert all_equals(sample_out, solution)
             except AssertionError:
-                print("Failure", sample_out, solution)
+                print("Failure:\n")
+                print("sample_out: ", sample_out)
+                print("solution: ", solution)
             else:
                 print("Success")
         else:
