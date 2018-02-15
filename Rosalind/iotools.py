@@ -1,3 +1,6 @@
+import requests
+
+
 def parse_fasta(fasta_id):
     data = fasta_id.split('\n')
     name = data[0]
@@ -27,13 +30,13 @@ def read_complete_fasta(fp):
     return fasta
 
 
+def get_uniprot(uniprot_id):
+    url = 'http://www.uniprot.org/uniprot/' + uniprot_id + '.fasta'
+    return requests.get(url).text
+
+
 def copy_to_clipboard(s):
     import os
 
     cmd = 'echo %s | tr -d "\n" | pbcopy' % s
     os.system(cmd)
-
-
-if __name__ == '__main__':
-
-    copy_to_clipboard('abc')
