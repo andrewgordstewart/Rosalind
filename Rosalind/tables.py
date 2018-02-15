@@ -63,19 +63,17 @@ CODON_TABLE = {
 }
 
 
-def reverse_codon_table():
-    '''
-    The reverse of the codon table. Since the codon table is not bijective,
-    each amino acid corresponds to a list of precursor codons.
-    '''
-    table = CODON_TABLE
-    reverse_table = {}
-    for codon in table:
-        reverse_table[table[codon]] = []
+'''
+The reverse of the codon table. Since the codon table is not bijective,
+each amino acid corresponds to a list of precursor codons.
+'''
+reverse_table = {}
+for codon in CODON_TABLE:
+    reverse_table[CODON_TABLE[codon]] = []
 
-    for codon in table:
-        reverse_table[table[codon]].append(codon)
-    return reverse_table
+for codon in CODON_TABLE:
+    reverse_table[CODON_TABLE[codon]].append(codon)
+REVERSE_CODON_TABLE = reverse_table
 
 
 def monoisotopic_mass_table():
