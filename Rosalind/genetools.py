@@ -240,9 +240,3 @@ def splice(sequence, introns, sequence_type='dna'):
 
     protein = dna_to_protein(dna).replace('*', '')
     return protein
-
-
-if __name__ == '__main__':
-
-    print(reverse_palindrome('ATGCAT'))
-    print(reverse_compliment('ATGCAT'))
