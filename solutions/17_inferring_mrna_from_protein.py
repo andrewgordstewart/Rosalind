@@ -1,18 +1,18 @@
-import rosalind.tables
-import rosalind.genetools
+from rosalind.tables import REVERSE_CODON_TABLE
 
-# the number of choices of codons for a given protein code
-table = rosalind.tables.reverse_codon_table()
-choice_table = {}
-for c in table:
-    choice_table[c] = len(table[c])
+MODULUS = 1000000
 
-protein = open('../data/rosalind_mrna.txt', 'r').read().rstrip()
 
-n = 1000000
-choices = 1
-for c in protein:
-    # print c, choices, choice_table[c], (choices*choice_table[c])%n, '\n', '-'*79
-    choices = (choices*choice_table[c]) % n
+def solve(dataset):
+    protein = dataset.rstrip()
+    # the number of choices of codons for a given protein code
+    table = REVERSE_CODON_TABLE
+    choice_table = {}
+    for c in table:
+        choice_table[c] = len(table[c])
 
-print (choices*3)%n         # account for the 3 choices of the stop codon
+    choices = 1
+    for c in protein:
+        choices = (choices*choice_table[c]) % MODULUS
+
+    return (choices*3) % MODULUS  # account for the 3 choices of the stop codon
