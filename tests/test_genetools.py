@@ -43,11 +43,12 @@ def test_gc_content():
     assert 100*genetools.gc_content(dna_sequence) == pytest.approx(60.919540, 0.001)
 
 
-def test_rna_to_protein():
-    rna_sequence = 'AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA'
-    protein_sequence = 'MAMAPRTEINSTRING'
-
-    assert genetools.rna_to_protein(rna_sequence) == protein_sequence
+@pytest.mark.parametrize("rna,protein", [
+    ('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA', 'MAMAPRTEINSTRING*'),
+    ('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGAAUGGCC', 'MAMAPRTEINSTRING*MA'),
+])
+def test_rna_to_protein(rna, protein):
+    assert genetools.rna_to_protein(rna) == protein
 
 
 def test_monoisotopic_mass():

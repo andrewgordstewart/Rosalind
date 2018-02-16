@@ -131,7 +131,7 @@ def rna_to_protein(rna_sequence):
             a, b, c = rna_sequence[i], rna_sequence[i+1], rna_sequence[i+2]
             codon = a+b+c
             if codon in ['UAA', 'UAG', 'UGA']:  # codons for end of rna code
-                return protein
+                protein = protein + '*'
             elif codon in table:
                 protein = protein + table[codon]
             else:
@@ -139,7 +139,7 @@ def rna_to_protein(rna_sequence):
         except IndexError:
             pass
 
-    raise ValueError(f"Invalid rna sequence {rna_sequence}")
+    return protein
 
 
 def dna_to_protein(dna_sequence):
@@ -168,6 +168,7 @@ def candidate_proteins(sequence, sequence_type='dna'):
     proteins.extend([dna_to_protein(rev_comp[i:]) for i in range(3)])
 
     matches = set()
+
     for p in proteins:
         for i, c in enumerate(p):
             if c == 'M':
