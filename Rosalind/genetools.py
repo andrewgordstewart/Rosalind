@@ -99,15 +99,7 @@ def rna_to_dna(rna_sequence):
 def dna_to_rna(dna_sequence):
     validate_sequence(dna_sequence, 'dna')
 
-    rna_sequence = ''
-    for s in dna_sequence:
-        if s == '\n':
-            pass
-        if s == 'T':
-            rna_sequence = rna_sequence + 'U'
-        else:
-            rna_sequence = rna_sequence + s
-    return rna_sequence
+    return dna_sequence.replace('T', 'U')
 
 
 def reverse_compliment(dna_sequence):
