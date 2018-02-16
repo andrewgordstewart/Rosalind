@@ -22,14 +22,6 @@ def read_fasta(fasta):
         yield (name, ''.join(seq))
 
 
-def read_complete_fasta(fp):
-    fasta = []
-    for name, seq in read_fasta(fp):
-        fasta.append((name, seq))
-
-    return fasta
-
-
 def get_uniprot(uniprot_id):
     url = 'http://www.uniprot.org/uniprot/' + uniprot_id + '.fasta'
     return requests.get(url).text
